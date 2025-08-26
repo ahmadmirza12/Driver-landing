@@ -3,56 +3,56 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { MdArrowDropDown, MdArrowForward } from "react-icons/md";
 
 export const Navbar = () => {
-  const state=useSelector((state)=>state.authConfigs)
+  const state = useSelector((state) => state.authConfigs);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  
+  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
+
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const router = useRouter();
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleClick=()=>{
-    if(state.token){
-      window.open('/screens/dashboard','_blank')
+  const handleClick = () => {
+    if (state.token) {
+      window.open("/screens/dashboard", "_blank");
+    } else {
+      window.open("/screens/login", "_blank");
     }
-    else{
-      window.open('/screens/login','_blank')
-    }
-  }
+  };
 
   // Sidebar animation variants
   const sidebarVariants = {
     open: {
       x: 0,
       opacity: 1,
-      transition: { 
-        type: "spring", 
-        stiffness: 400, 
+      transition: {
+        type: "spring",
+        stiffness: 400,
         damping: 25,
         staggerChildren: 0.1,
-        delayChildren: 0.2
+        delayChildren: 0.2,
       },
     },
     closed: {
       x: "100%",
       opacity: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 400, 
+      transition: {
+        type: "spring",
+        stiffness: 400,
         damping: 25,
         staggerChildren: 0.05,
-        staggerDirection: -1
+        staggerDirection: -1,
       },
     },
   };
@@ -63,21 +63,21 @@ export const Navbar = () => {
       opacity: 1,
       y: 0,
       x: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 20 
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
       },
     },
-    closed: { 
-      opacity: 0, 
+    closed: {
+      opacity: 0,
       y: 20,
       x: 20,
-      transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 20 
-      }
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      },
     },
   };
 
@@ -85,20 +85,20 @@ export const Navbar = () => {
   const backdropVariants = {
     open: {
       opacity: 1,
-      transition: { duration: 0.3 }
+      transition: { duration: 0.3 },
     },
     closed: {
       opacity: 0,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   // Logo animation
   const logoVariants = {
     hover: {
       scale: 1.05,
-      transition: { type: "spring", stiffness: 400, damping: 25 }
-    }
+      transition: { type: "spring", stiffness: 400, damping: 25 },
+    },
   };
 
   // Button animation
@@ -106,37 +106,37 @@ export const Navbar = () => {
     hover: {
       scale: 1.05,
       boxShadow: "0 10px 25px rgba(234, 179, 8, 0.3)",
-      transition: { type: "spring", stiffness: 400, damping: 25 }
+      transition: { type: "spring", stiffness: 400, damping: 25 },
     },
     tap: {
       scale: 0.95,
-      transition: { type: "spring", stiffness: 400, damping: 25 }
-    }
+      transition: { type: "spring", stiffness: 400, damping: 25 },
+    },
   };
 
   // Hamburger line animations
   const line1Variants = {
     closed: { rotate: 0, y: 0 },
-    open: { rotate: 45, y: 8 }
+    open: { rotate: 45, y: 8 },
   };
 
   const line2Variants = {
     closed: { opacity: 1 },
-    open: { opacity: 0 }
+    open: { opacity: 0 },
   };
 
   const line3Variants = {
     closed: { rotate: 0, y: 0 },
-    open: { rotate: -45, y: -8 }
+    open: { rotate: -45, y: -8 },
   };
 
   return (
     <>
-      <motion.nav 
+      <motion.nav
         className={`fixed top-0 left-0 right-0 z-40 font-body text-white px-4 py-4 transition-all duration-300 ${
-          scrolled 
-            ? 'bg-[#1F5546]/95 backdrop-blur-md shadow-2xl' 
-            : 'bg-[#1F5546]'
+          scrolled
+            ? "bg-[#1F5546]/95 backdrop-blur-md shadow-2xl"
+            : "bg-[#1F5546]"
         }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -144,13 +144,13 @@ export const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             className="flex items-center cursor-pointer"
             variants={logoVariants}
             whileHover="hover"
           >
             <div className="relative">
-              <motion.h1 
+              <motion.h1
                 className="text-xl md:text-2xl font-bold"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -167,12 +167,11 @@ export const Navbar = () => {
                   />
                 </span>
               </motion.h1>
-             
             </div>
           </motion.div>
 
           {/* Desktop Menu */}
-          <motion.div 
+          <motion.div
             className="hidden md:flex items-center space-x-8"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -197,7 +196,7 @@ export const Navbar = () => {
                 />
               </motion.a>
             ))}
-            
+
             <motion.button
               className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-5 py-2 rounded-xl font-medium relative overflow-hidden group"
               variants={buttonVariants}
@@ -208,14 +207,65 @@ export const Navbar = () => {
               transition={{ delay: 0.7 }}
               onClick={handleClick}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
+              <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative z-10">Book Now</span>
-              <motion.div
-                className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-              />
+              <motion.div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
             </motion.button>
+
+            <div className="relative">
+              <motion.button
+                className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-5 py-2 rounded-xl font-medium relative overflow-hidden group"
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7 }}
+                onClick={() => setShowSignupDropdown(!showSignupDropdown)}
+              >
+                <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center gap-1">
+                  Sign Up
+                  <motion.span
+                    animate={{ rotate: showSignupDropdown ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MdArrowDropDown size={20} />
+                  </motion.span>
+                </span>
+                <motion.div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+              </motion.button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {showSignupDropdown && (
+                  <motion.div
+                    className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <a
+                      href="/screens/signup/driver"
+                      className="px-4 py-2 text-sm flex items-center justify-between text-[#EAB308] border-b-[1px] border-[#EAB308] my-2 hover:bg-gray-100"
+                      onClick={() => setShowSignupDropdown(false)}
+                    >
+                      Customer signup <MdArrowForward size={20} />
+                    </a>
+
+                    <a
+                      href="/screens/signup/customer"
+                      className="px-4 py-2 text-sm flex items-center justify-between text-[#1F5546] hover:bg-gray-100"
+                      onClick={() => setShowSignupDropdown(false)}
+                    >
+                      Corporate signup
+                      <MdArrowForward size={20} />
+                    </a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -279,7 +329,7 @@ export const Navbar = () => {
             <div className="flex flex-col h-full">
               {/* Sidebar Header */}
               <div className="flex justify-between items-center p-6 border-b border-white/10">
-                <motion.h2 
+                <motion.h2
                   className="text-xl font-bold text-white"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -293,8 +343,18 @@ export const Navbar = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </motion.button>
               </div>
@@ -320,7 +380,7 @@ export const Navbar = () => {
                     {item}
                   </motion.a>
                 ))}
-                
+
                 <motion.button
                   className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-6 py-4 rounded-xl font-medium relative overflow-hidden group mt-8"
                   variants={menuItemVariants}
@@ -328,13 +388,9 @@ export const Navbar = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => window.open("/screens/dashboard", "_blank")}
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  />
+                  <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">Book Now</span>
-                  <motion.div
-                    className="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                  />
+                  <motion.div className="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
                 </motion.button>
               </div>
 
