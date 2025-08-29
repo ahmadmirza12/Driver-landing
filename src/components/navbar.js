@@ -23,7 +23,7 @@ export const Navbar = () => {
   }, []);
 
   const handleBookNow = () => {
-    router.push("http://localhost:3001/screens/signup", "_blank");
+    router.push("https://driver-website-11.vercel.app/screens/signup", "_blank");
   };
 
   // Sidebar animation variants
@@ -194,7 +194,7 @@ export const Navbar = () => {
 
             {/* Book Now Link Button */}
             <motion.a
-              href="http://localhost:3001/screens/signup"
+              href="https://driver-website-11.vercel.app/screens/signup"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
@@ -230,7 +230,7 @@ export const Navbar = () => {
 
             {/* Login Link Button */}
             <motion.a
-              href="http://localhost:3001"
+              href="https://driver-website-11.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
