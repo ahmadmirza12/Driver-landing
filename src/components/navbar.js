@@ -3,13 +3,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { MdArrowDropDown, MdArrowForward } from "react-icons/md";
+import { MdArrowForward, MdLogin, MdEventAvailable } from "react-icons/md";
 
 export const Navbar = () => {
   const state = useSelector((state) => state.authConfigs);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -23,12 +22,8 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleClick = () => {
-    if (state.token) {
-      window.open("/screens/dashboard", "_blank");
-    } else {
-      window.open("/screens/login", "_blank");
-    }
+  const handleBookNow = () => {
+    router.push("http://localhost:3001/screens/signup", "_blank");
   };
 
   // Sidebar animation variants
@@ -101,11 +96,11 @@ export const Navbar = () => {
     },
   };
 
-  // Button animation
-  const buttonVariants = {
+  // Link button animation
+  const linkButtonVariants = {
     hover: {
       scale: 1.05,
-      boxShadow: "0 10px 25px rgba(234, 179, 8, 0.3)",
+      y: -2,
       transition: { type: "spring", stiffness: 400, damping: 25 },
     },
     tap: {
@@ -197,75 +192,77 @@ export const Navbar = () => {
               </motion.a>
             ))}
 
-            <motion.button
-              className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-5 py-2 rounded-xl font-medium relative overflow-hidden group"
-              variants={buttonVariants}
+            {/* Book Now Link Button */}
+            <motion.a
+              href="http://localhost:3001/screens/signup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
+              variants={linkButtonVariants}
               whileHover="hover"
               whileTap="tap"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              onClick={handleClick}
             >
-              <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10">Book Now</span>
-              <motion.div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            </motion.button>
+              <span className="relative z-10 flex items-center gap-2">
+                <motion.div
+                  className="w-5 h-5 text-[#EAB308] opacity-80 group-hover:opacity-100"
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MdEventAvailable size={20} />
+                </motion.div>
+                Book Now
+                <motion.div
+                  className="transform transition-transform group-hover:translate-x-1"
+                  whileHover={{ x: 3 }}
+                >
+                </motion.div>
+              </span>
+              <motion.div
+                className="absolute -bottom-1 left-4 right-4 h-0.5 bg-[#EAB308] origin-left"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.a>
 
-            <div className="relative">
-              <motion.button
-                className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-5 py-2 rounded-xl font-medium relative overflow-hidden group"
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 }}
-                onClick={() => setShowSignupDropdown(!showSignupDropdown)}
-              >
-                <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10 flex items-center gap-1">
-                  Sign Up
-                  <motion.span
-                    animate={{ rotate: showSignupDropdown ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MdArrowDropDown size={20} />
-                  </motion.span>
-                </span>
-                <motion.div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-              </motion.button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {showSignupDropdown && (
-                  <motion.div
-                    className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg py-1 z-50"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <a
-                      href="/screens/signup/driver"
-                      className="px-4 py-2 text-sm flex items-center justify-between text-[#EAB308] border-b-[1px] border-[#EAB308] my-2 hover:bg-gray-100"
-                      onClick={() => setShowSignupDropdown(false)}
-                    >
-                      Customer signup <MdArrowForward size={20} />
-                    </a>
-
-                    <a
-                      href="/screens/signup/customer"
-                      className="px-4 py-2 text-sm flex items-center justify-between text-[#1F5546] hover:bg-gray-100"
-                      onClick={() => setShowSignupDropdown(false)}
-                    >
-                      Corporate signup
-                      <MdArrowForward size={20} />
-                    </a>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* Login Link Button */}
+            <motion.a
+              href="http://localhost:3001/screens/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
+              variants={linkButtonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <motion.div
+                  className="w-5 h-5 text-[#EAB308] opacity-80 group-hover:opacity-100"
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MdLogin size={20} />
+                </motion.div>
+                Login
+                <motion.div
+                  className="transform transition-transform group-hover:translate-x-1"
+                  whileHover={{ x: 3 }}
+                >
+                </motion.div>
+              </span>
+              <motion.div
+                className="absolute -bottom-1 left-4 right-4 h-0.5 bg-[#EAB308] origin-left"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.a>
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -381,17 +378,66 @@ export const Navbar = () => {
                   </motion.a>
                 ))}
 
-                <motion.button
-                  className="bg-gradient-to-r from-[#EAB308] to-[#F59E0B] text-black px-6 py-4 rounded-xl font-medium relative overflow-hidden group mt-8"
-                  variants={menuItemVariants}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => window.open("/screens/dashboard", "_blank")}
-                >
-                  <motion.div className="absolute inset-0 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10">Book Now</span>
-                  <motion.div className="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-                </motion.button>
+                {/* Mobile Link Buttons */}
+                <div className="mt-8 space-y-4 w-full max-w-xs">
+                  {/* Book Now Link Button */}
+                  <motion.a
+                    href="http://localhost:3001/screens/signup"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
+                    variants={menuItemVariants}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={toggleSidebar}
+                  >
+                    <motion.div className="absolute inset-0 bg-[#EAB308]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="flex items-center gap-3 relative z-10">
+                      <motion.div 
+                        className="w-8 h-8 bg-[#EAB308]/10 border border-[#EAB308]/30 rounded-lg flex items-center justify-center group-hover:bg-[#EAB308]/20"
+                        whileHover={{ rotate: 15, scale: 1.1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <MdEventAvailable size={18} className="text-[#EAB308]" />
+                      </motion.div>
+                      <span className="font-medium">Book Now</span>
+                      <motion.div
+                        whileHover={{ x: 3 }}
+                        className="ml-auto"
+                      >
+                      </motion.div>
+                    </div>
+                  </motion.a>
+
+                  {/* Login Link Button */}
+                  <motion.a
+                    href="http://localhost:3001/screens/login"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
+                    variants={menuItemVariants}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={toggleSidebar}
+                  >
+                    <motion.div className="absolute inset-0 bg-[#EAB308]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="flex items-center gap-3 relative z-10">
+                      <motion.div 
+                        className="w-8 h-8 bg-[#EAB308]/10 border border-[#EAB308]/30 rounded-lg flex items-center justify-center group-hover:bg-[#EAB308]/20"
+                        whileHover={{ rotate: 15, scale: 1.1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <MdLogin size={18} className="text-[#EAB308]" />
+                      </motion.div>
+                      <span className="font-medium">Login</span>
+                      <motion.div
+                        whileHover={{ x: 3 }}
+                        className="ml-auto"
+                      >
+                      </motion.div>
+                    </div>
+                  </motion.a>
+                </div>
               </div>
 
               {/* Decorative Elements */}
