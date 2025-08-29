@@ -382,7 +382,7 @@ export const Navbar = () => {
                 <div className="mt-8 space-y-4 w-full max-w-xs">
                   {/* Book Now Link Button */}
                   <motion.a
-                    href="http://localhost:3001/screens/signup"
+                    href="https://driver-website-11.vercel.app/screens/signup"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
@@ -411,7 +411,7 @@ export const Navbar = () => {
 
                   {/* Login Link Button */}
                   <motion.a
-                    href="http://localhost:3001"
+                    href="https://driver-website-11.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
