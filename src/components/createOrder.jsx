@@ -281,11 +281,11 @@ const CreateOrder = ({ initialData = {} }) => {
         theme="colored"
       />
 
+      
+
       <div className="w-full mx-auto">
-        <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">
-          Create Order
-        </h1>
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+        <div className="p-4 sm:p-2">
+       
           <h2 className="text-base sm:text-lg font-medium text-gray-800 mb-4 sm:mb-6">
             Create Order
           </h2>
@@ -643,6 +643,7 @@ const CreateOrder = ({ initialData = {} }) => {
               </button>
             </div>
           </form>
+        
         </div>
       </div>
     </div>
