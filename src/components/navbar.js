@@ -23,7 +23,7 @@ export const Navbar = () => {
   }, []);
 
   const handleBookNow = () => {
-    router.push("https://driver-website-11.vercel.app/screens/signup", "_blank");
+    router.push("https://driver-website-zbi1.vercel.app/screens/signup", "_blank");
   };
 
   // Sidebar animation variants
@@ -194,7 +194,7 @@ export const Navbar = () => {
 
             {/* Book Now Link Button */}
             <motion.a
-              href="http://localhost:3001/screens/signup"
+              href="https://driver-website-zbi1.vercel.app/screens/signup"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
@@ -230,7 +230,7 @@ export const Navbar = () => {
 
             {/* Login Link Button */}
             <motion.a
-              href="http://localhost:3001/screens/login"    
+              href="https://driver-website-zbi1.vercel.app/screens/login"    
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-[#EAB308] transition-colors relative group font-medium px-4 py-2 rounded-lg hover:bg-white/5"
@@ -382,7 +382,7 @@ export const Navbar = () => {
                 <div className="mt-8 space-y-4 w-full max-w-xs">
                   {/* Book Now Link Button */}
                   <motion.a
-                    href="http://localhost:3001/screens/signup"
+                    href="https://driver-website-zbi1.vercel.app/screens/signup"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
@@ -411,7 +411,7 @@ export const Navbar = () => {
 
                   {/* Login Link Button */}
                   <motion.a
-                    href="http://localhost:3001/screens/login"
+                    href="https://driver-website-zbi1.vercel.app/screens/login"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center text-white hover:text-[#EAB308] border border-white/30 hover:border-[#EAB308]/50 px-6 py-4 rounded-xl font-medium group relative overflow-hidden w-full transition-all duration-300"
