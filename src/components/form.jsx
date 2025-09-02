@@ -725,7 +725,7 @@ const BookingForm = () => {
       toast.success("Booking request sent successfully!");
       const params = new URLSearchParams();
       params.set("booking", JSON.stringify(bookingData));
-      const redirectUrl = `https://driver-website-11.vercel.app/screens/signup?${params.toString()}`;
+      const redirectUrl = `https://driver-website-zbi1.vercel.app/screens/signup?${params.toString()}`;
       sessionStorage.setItem("bookingParams", params.toString());
       window.open(redirectUrl, "_blank");
     } catch (error) {
