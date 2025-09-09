@@ -1,0 +1,178 @@
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { post, get } from "@/services/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// [Previous SVG Icons and helper components remain the same...]
+
+// --- Main Component ---
+const CreateOrder = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const [isFormInitialized, setIsFormInitialized] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [showSubmittingModal, setShowSubmittingModal] = useState(false);
+  const [bookingType, setBookingType] = useState("quotation");
+  const [suggestions, setSuggestions] = useState({ pickup: {}, dropoff: {} });
+  const [activeField, setActiveField] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const timeoutRef = useRef(null);
+  const locationSearchRefs = useRef({});
+
+  // Form state
+  const [services, setServices] = useState([
+    {
+      id: `s-${Date.now()}`,
+      serviceType: "airport",
+      startDate: "",
+      endDate: "",
+      time: "",
+      pickup: "",
+      pickupLatitude: null,
+      pickupLongitude: null,
+      dropoff: "",
+      dropoffLatitude: null,
+      dropoffLongitude: null,
+      flightNumber: "",
+      hours: 4,
+      cityUsageArea: "Kuala Lumpur / Klang Valley",
+      additionalServices: [],
+      vehicles: [
+        {
+          id: `v-${Date.now()}`,
+          type: "",
+          make: "",
+          model: "",
+          quantity: 1,
+        },
+      ],
+    },
+  ]);
+
+  const [contactInfo, setContactInfo] = useState({
+    name: "",
+    phone: "",
+  });
+  
+  const [remarks, setRemarks] = useState("");
+
+  // Initialize booking type from URL params
+  useEffect(() => {
+    const bookingTypeFromParams = searchParams.get("bookingType");
+    if (bookingTypeFromParams && ["quotation", "booking"].includes(bookingTypeFromParams)) {
+      setBookingType(bookingTypeFromParams);
+    }
+  }, [searchParams]);
+
+  // Form validation
+  const validateForm = (services, contactInfo) => {
+    const errors = {};
+    
+    // Validate contact info
+    if (!contactInfo.name?.trim()) {
+      errors.contactName = 'Name is required';
+    }
+    if (!contactInfo.phone?.trim()) {
+      errors.contactPhone = 'Phone number is required';
+    }
+    
+    // Validate services
+    services.forEach((service, serviceIndex) => {
+      if (!service.startDate) {
+        errors[`service-${serviceIndex}-date`] = 'Start date is required';
+      }
+      if (!service.time) {
+        errors[`service-${serviceIndex}-time`] = 'Time is required';
+      }
+      // Add more validations as needed
+    });
+    
+    return errors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      // Validate form first
+      const errors = validateForm(services, contactInfo);
+      if (Object.keys(errors).length > 0) {
+        setFormErrors(errors);
+        toast.error('Please fill in all required fields');
+        return;
+      }
+      
+      // Create search params
+      const params = new URLSearchParams();
+      
+      // Add all form data to params
+      params.append('services', JSON.stringify(services));
+      params.append('contactInfo', JSON.stringify({
+        name: contactInfo.name.trim(),
+        phone: contactInfo.phone.trim()
+      }));
+      
+      if (remarks) {
+        params.append('remarks', remarks.trim());
+      }
+      
+      // Store in sessionStorage as backup
+      try {
+        sessionStorage.setItem('bookingData', JSON.stringify({
+          services,
+          contactInfo,
+          remarks,
+          bookingType,
+          timestamp: new Date().toISOString()
+        }));
+      } catch (storageError) {
+        console.warn('Failed to save to sessionStorage:', storageError);
+      }
+      
+      // Navigate to review page with search params
+      router.push(`/review?${params.toString()}`);
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Failed to submit form. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // [Rest of the component code remains the same...]
+  
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">
+        {bookingType === 'booking' ? 'Create Booking' : 'Request Quotation'}
+      </h1>
+      
+      <form onSubmit={handleSubmit}>
+        {/* Form fields here */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          {/* Service forms will be rendered here */}
+          
+          <div className="mt-6">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Continue'}
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <ToastContainer position="bottom-right" />
+    </div>
+  );
+};
+
+export default CreateOrder;
